@@ -9,7 +9,7 @@ This library helps to extract and parse the geocode from such queries. With it, 
 	var url = 'https://api.twitter.com/1.1/search/tweets.json?q=&geocode=-22.912214,-43.230182,1km&lang=pt&result_type=recent';
 	var twitterGeocode = new TwitterGeocode();
 	var geocode = twitterGeocode.parse(url);
-	console.log(twitterGeocode.lat); // prints -22.912214
-	console.log(twitterGeocode.lng); // prints -43.230182
-	console.log(twitterGeocode.radius); // prints 1000
+	console.log(geocode.lat); // prints -22.912214
+	console.log(geocode.lng); // prints -43.230182
+	console.log(geocode.radius); // prints 1000
 

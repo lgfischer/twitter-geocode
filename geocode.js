@@ -49,7 +49,7 @@ function TwitterGeocode() {
             return {
                 lat: parseFloat( match[1] ) ,
                 lng: parseFloat( match[3] ),
-                radius: geocode.parseMeters( match[5] ),
+                radius: parseMeters( match[5] ),
                 string: match[0]
             };
         }
