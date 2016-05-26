@@ -1,6 +1,6 @@
 function TwitterGeocode() {
     // https://regex101.com/r/iD0eM3/2
-    var geocodeRegex = /geocode=([+-]?\d+(\.\d+)?),([+-]?\d+(\.\d+)?),(\d+(\.\d+)?\w*)/;
+    var geocodeRegex = /geocode:([+-]?\d+(\.\d+)?),([+-]?\d+(\.\d+)?),(\d+(\.\d+)?\w*)/;
 
     // https://regex101.com/r/aY8iC4/1
     var distanceRegex = /(\d+(\.\d+)?)(\w+)?/
@@ -85,7 +85,13 @@ function TwitterGeocode() {
      */
     this.toString = function(geocode) {
         if( this.isGeocode(geocode) ) {
-            return "geocode="+geocode.lat+","+geocode.lng+","+geocode.radius;
+            var radius = Math.floor(geocode.radius/1000);
+            if( radius === 0 ) {
+                radius = 1;
+            }
+            var lat = Math.round(geocode.lat*100000)/100000;
+            var lng = Math.round(geocode.lng*100000)/100000;
+            return "geocode:"+lat+","+lng+","+radius+"km";
         }
         else {
             return null;
