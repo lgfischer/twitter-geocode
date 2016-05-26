@@ -5,6 +5,17 @@ function TwitterGeocode() {
     // https://regex101.com/r/aY8iC4/1
     var distanceRegex = /(\d+(\.\d+)?)(\w+)?/
 
+
+    this.create = function(lat, lng, radius) {
+        var geocode = {
+            lat: lat,
+            lng: lng,
+            radius: radius
+        };
+        geocode.string = this.toString(geocode);
+        return geocode;
+    };
+
     /**
      * Parse the given string as distance number. Return the number of meters it
      * represents.
@@ -49,7 +60,7 @@ function TwitterGeocode() {
             return {
                 lat: parseFloat( match[1] ) ,
                 lng: parseFloat( match[3] ),
-                radius: parseMeters( match[5] ),
+                radius: this.parseMeters( match[5] ),
                 string: match[0]
             };
         }
@@ -57,6 +68,13 @@ function TwitterGeocode() {
             return null
         }
     };
+
+    this.isGeocode = function(geocode) {
+        return typeof geocode === 'object' && geocode &&
+            typeof(geocode.lat) === 'number' &&
+            typeof(geocode.lng) === 'number' &&
+            typeof(geocode.radius) === 'number';
+    }
 
     /**
      * Converts a geocode object (the output of the parse method, with fields
@@ -66,11 +84,8 @@ function TwitterGeocode() {
      * geocode output from parse).
      */
     this.toString = function(geocode) {
-        if( typeof geocode === 'object' && geocode &&
-            typeof(geocode.lat) === 'number' &&
-            typeof(geocode.lng) === 'number' &&
-            typeof(geocode.radius) === 'number' ) {
-            return "geocode:"+geocode.lat+","+geocode.lng+","+geocode.radius;
+        if( this.isGeocode(geocode) ) {
+            return "geocode="+geocode.lat+","+geocode.lng+","+geocode.radius;
         }
         else {
             return null;
